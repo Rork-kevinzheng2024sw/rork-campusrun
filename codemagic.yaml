@@ -12,6 +12,10 @@ workflows:
         script: |
           echo "Installing npm dependencies..."
           npm install --legacy-peer-deps
+          # 补充 ajv 依赖
+          npm install ajv@^8 ajv-keywords@^5 --save-dev
+          # 确保 expo 依赖匹配
+          npx expo install
           npm install -g eas-cli
       - name: Build Android APK via EAS
         script: |
