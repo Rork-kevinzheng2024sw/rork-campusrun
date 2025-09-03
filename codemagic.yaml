@@ -5,24 +5,22 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       node: 18
-      xcode: latest
       groups: []
+      vars:
+        EAS_TOKEN: Encrypted
     scripts:
       - name: Install dependencies
         script: |
           echo "Installing npm dependencies with legacy peer deps..."
           npm install --legacy-peer-deps
-      - name: Prebuild Expo project
+      - name: Login to Expo
         script: |
-          echo "Running Expo prebuild..."
-          npx expo prebuild --clean
-    build:
-      android:
-        build_type: apk
-        gradle_options: "--no-daemon"
-      ios:
-        build_type: archive
-        export_options: "ad-hoc"
+          echo "Logging into Expo CLI..."
+          npm install -g eas-cli
+          eas login --token $EAS_TOKEN
+      - name: Build Android APK via EAS
+        script: |
+          echo "Building Android APK via EAS..."
+          eas build -p android --profile production --apk --non-interactive
     artifacts:
-      - android/app/build/outputs/**/*.apk
-      - ios/build/**/*.ipa
+      - build/**/*
