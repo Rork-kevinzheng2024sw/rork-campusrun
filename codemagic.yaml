@@ -7,20 +7,18 @@ workflows:
       node: 18
       groups: []
       vars:
-        EAS_TOKEN: Encrypted
+        # Expo access token, mark as secure in Codemagic
+        EXPO_TOKEN: Encrypted
     scripts:
       - name: Install dependencies
         script: |
-          echo "Installing npm dependencies with legacy peer deps..."
+          echo "Installing npm dependencies..."
           npm install --legacy-peer-deps
-      - name: Login to Expo
-        script: |
-          echo "Logging into Expo CLI..."
           npm install -g eas-cli
-          eas login --token $EAS_TOKEN
       - name: Build Android APK via EAS
         script: |
-          echo "Building Android APK via EAS..."
+          echo "Starting EAS build for Android APK..."
           eas build -p android --profile production --apk --non-interactive
     artifacts:
+      # Collect any artifacts if needed (EAS Cloud will provide download link)
       - build/**/*
