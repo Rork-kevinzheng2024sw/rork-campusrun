@@ -7,8 +7,6 @@ workflows:
       node: 18
       groups:
         - default
-      vars:
-        EXPO_TOKEN:  # 在后台设置真实 token 并加密
     scripts:
       - name: Install dependencies
         script: |
