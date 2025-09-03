@@ -5,9 +5,9 @@ workflows:
     instance_type: mac_mini_m1
     environment:
       node: 18
-      groups: []
+      groups:
+        - default
       vars:
-        # Expo access token, mark as secure in Codemagic
         EXPO_TOKEN: Encrypted
     scripts:
       - name: Install dependencies
@@ -17,8 +17,7 @@ workflows:
           npm install -g eas-cli
       - name: Build Android APK via EAS
         script: |
-          echo "Starting EAS build for Android APK..."
+          echo "Building Android APK via EAS..."
           eas build -p android --profile production --apk --non-interactive
     artifacts:
-      # Collect any artifacts if needed (EAS Cloud will provide download link)
       - build/**/*
