@@ -1,0 +1,28 @@
+workflows:
+  expo-managed-build:
+    name: Expo Managed Workflow Build
+    max_build_duration: 60
+    instance_type: mac_mini_m1
+    environment:
+      node: 18
+      xcode: latest
+      groups: []
+    scripts:
+      - name: Install dependencies
+        script: |
+          echo "Installing npm dependencies with legacy peer deps..."
+          npm install --legacy-peer-deps
+      - name: Prebuild Expo project
+        script: |
+          echo "Running Expo prebuild..."
+          npx expo prebuild --clean
+    build:
+      android:
+        build_type: apk
+        gradle_options: "--no-daemon"
+      ios:
+        build_type: archive
+        export_options: "ad-hoc"
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+      - ios/build/**/*.ipa
