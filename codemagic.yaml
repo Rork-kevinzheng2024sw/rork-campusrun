@@ -11,11 +11,16 @@ workflows:
       - name: Install dependencies
         script: |
           echo "Installing npm dependencies..."
-          npm install --legacy-peer-deps
-          # 补充 ajv 依赖
+          # 先尝试使用 lockfile 安装，如果失败再 fallback
+          (npm ci) || npm install --legacy-peer-deps
+
+          # 补全 expo-router 依赖缺失的 ajv 模块
           npm install ajv@^8 ajv-keywords@^5 --save-dev
-          # 确保 expo 依赖匹配
-          npx expo install
+
+          # 确保 Expo 依赖版本正确
+          npx expo install --fix --non-interactive
+
+          # 安装 EAS CLI
           npm install -g eas-cli
       - name: Build Android APK via EAS
         script: |
