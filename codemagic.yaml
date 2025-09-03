@@ -16,6 +16,6 @@ workflows:
       - name: Build Android APK via EAS
         script: |
           echo "Building Android APK via EAS..."
-          eas build -p android --profile production --apk --non-interactive
+          eas build -p android --profile production --non-interactive
     artifacts:
       - build/**/*
